@@ -40,7 +40,7 @@ export const getAllUsers = async (req: Request, res: Response): Promise<void> =>
         res.status(500).json({ message: 'Internal server error' });
     }
 };
-
+// Controller function to login a user with email and password 
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
     try {
         const { email, password } = req.body;
