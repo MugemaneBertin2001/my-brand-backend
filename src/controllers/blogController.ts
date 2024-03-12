@@ -1,15 +1,23 @@
 import { Request, Response } from 'express';
 import BlogModel from '../models/blogModel';
-import { fileUpload } from '../utils/multerHelper'; // Assuming fileUpload is the helper for handling file uploads
+import { uploadToCloud } from '../utils/cloudinaryHelper';
 
-// Create a new blog post
+
 export const createBlog = async (req: Request, res: Response) => {
     try {
+        let blogImage;
+        if (req.file) {
+            blogImage = await uploadToCloud(req.file);
+        } else {
+            blogImage = null;
+        }
+        
         const { title, content } = req.body;
-        const blogImage = req.file.path; // Assuming fileUpload middleware is used to handle image upload
         const newBlog = await BlogModel.create({ title, content, blogImage });
+        
         res.status(201).json(newBlog);
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
@@ -70,7 +78,7 @@ export const deleteBlog = async (req: Request, res: Response) => {
 export const likeBlog = async (req: Request, res: Response) => {
     try {
         const blogId = req.params.id;
-        const userId = req.body.userId; // Assuming userId is passed in the request body
+        const userId = req.body.userId;
         const updatedBlog = await BlogModel.findByIdAndUpdate(blogId, { $addToSet: { likes: userId } }, { new: true });
         if (!updatedBlog) {
             return res.status(404).json({ error: 'Blog not found' });

@@ -1,7 +1,5 @@
 import cloudinary from 'cloudinary';
 import dotenv from 'dotenv';
-import express from 'express';
-
 
 dotenv.config();
 
@@ -11,14 +9,15 @@ cloudinary.v2.config({
   api_secret: process.env.API_SECRET,
 });
 
-export const uploadToCloud = async (file: Express.Multer.File, res: express.Response) => {
+export const uploadToCloud = async (file: Express.Multer.File) => {
   try {
-    const profilePicture = await cloudinary.v2.uploader.upload(file.path, {
+    const uploadedImage = await cloudinary.v2.uploader.upload(file.path, {
       folder: 'Blissmothies',
       use_filename: true,
     });
-    return profilePicture;
-  } catch (error) {
-    return res.status(500).send(error);
+    return uploadedImage.secure_url;
+  } catch (e) {
+    console.error('Error uploading image to Cloudinary:', e);
+    throw new Error('Error uploading image to Cloudinary');
   }
 };

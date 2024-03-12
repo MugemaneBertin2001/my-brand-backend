@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv'; 
 import userRouter from './routes/userRoutes';
+import blogRouter from './routes/blogRoutes';
 
 class Server {
     private app: Express;
@@ -23,6 +24,7 @@ class Server {
         this.DB_URI = process.env.MONGODB_URI
         
         this.app.use('/api/users', userRouter);
+        this.app.use('/api/blogs', blogRouter);
     }
 
     private async connectDB(): Promise<void> {
