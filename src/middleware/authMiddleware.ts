@@ -33,7 +33,7 @@ const authenticateUser = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const authorizeAdmin = (req: Request<UserPayload>, res: Response, next: NextFunction) => {
-  if (!req.user || req.user.role !== 'admin') {
+  if (!(req.user && req.user.role !== 'admin')) {
     return res.status(403).json({ error: 'Forbidden: You must be an admin' });
   }
   next();

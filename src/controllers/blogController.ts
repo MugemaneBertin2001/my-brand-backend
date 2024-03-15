@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
-import BlogModel from '../models/blogModel';
+import * as blogService from '../services/blogService';
 import { uploadToCloud } from '../utils/cloudinaryHelper';
-
 
 export const createBlog = async (req: Request, res: Response) => {
     try {
@@ -11,96 +10,65 @@ export const createBlog = async (req: Request, res: Response) => {
         } else {
             blogImage = null;
         }
-        
-        const { title, content } = req.body;
-        const newBlog = await BlogModel.create({ title, content, blogImage });
-        
+        const { title, content} = req.body;
+        const newBlog = await blogService.createBlog(title, content, blogImage);
         res.status(201).json(newBlog);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
+
+        res.status(500).json({ error: error });
     }
 };
 
-// Get all blog posts
 export const getAllBlogs = async (req: Request, res: Response) => {
     try {
-        const blogs = await BlogModel.find();
+        const blogs = await blogService.getAllBlogs();
         res.status(200).json(blogs);
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        console.error(error);
+        res.status(500).json({ error: error});
     }
 };
 
-// Get a single blog post by ID
 export const getOneBlog = async (req: Request, res: Response) => {
     try {
         const blogId = req.params.id;
-        const blog = await BlogModel.findById(blogId);
+        const blog = await blogService.getOneBlog(blogId);
         if (!blog) {
             return res.status(404).json({ error: 'Blog not found' });
         }
         res.status(200).json(blog);
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        console.error(error);
+        res.status(500).json({ error: error });
     }
 };
 
-// Update a blog post by ID
 export const updateBlog = async (req: Request, res: Response) => {
     try {
         const blogId = req.params.id;
-        const updatedBlog = await BlogModel.findByIdAndUpdate(blogId, req.body, { new: true });
+        const updateData = req.body;
+        const updatedBlog = await blogService.updateBlog(blogId, updateData);
         if (!updatedBlog) {
             return res.status(404).json({ error: 'Blog not found' });
         }
         res.status(200).json(updatedBlog);
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        console.error(error);
+        res.status(500).json({ error: error });
     }
 };
 
-// Delete a blog post by ID
 export const deleteBlog = async (req: Request, res: Response) => {
     try {
         const blogId = req.params.id;
-        const deletedBlog = await BlogModel.findByIdAndDelete(blogId);
-        if (!deletedBlog) {
-            return res.status(404).json({ error: 'Blog not found' });
-        }
-        res.status(204).send();
+        const deletedBlog = await blogService.deleteBlog(blogId);
+        res.status(204).send({
+            message : "Deleted successfully",
+            deletedBlog,
+        });
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        console.error(error);
+        res.status(500).json({ error: error });
     }
 };
 
-// Like a blog post
-export const likeBlog = async (req: Request, res: Response) => {
-    try {
-        const blogId = req.params.id;
-        const userId = req.body.userId;
-        const updatedBlog = await BlogModel.findByIdAndUpdate(blogId, { $addToSet: { likes: userId } }, { new: true });
-        if (!updatedBlog) {
-            return res.status(404).json({ error: 'Blog not found' });
-        }
-        res.status(200).json(updatedBlog);
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
-};
-
-// Add a comment to a blog post
-export const addComment = async (req: Request, res: Response) => {
-    try {
-        const blogId = req.params.id;
-        const { name, commentBody } = req.body;
-        const comment = `${name}: ${commentBody}`;
-        const updatedBlog = await BlogModel.findByIdAndUpdate(blogId, { $push: { comments: comment } }, { new: true });
-        if (!updatedBlog) {
-            return res.status(404).json({ error: 'Blog not found' });
-        }
-        res.status(200).json(updatedBlog);
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
-};
