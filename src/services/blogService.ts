@@ -5,7 +5,16 @@ export const createBlog = async (title: string, content: string, blogImage: stri
 };
 
 export const getAllBlogs = async (): Promise<IBlog[]> => {
-    return  await BlogModel.find().populate('Like').populate('Comment');
+    try {
+        const blogs = await BlogModel.find()
+            .populate('likes') 
+            .populate('comments'); 
+
+        return blogs;
+    } catch (error) {
+        console.error("Error fetching blogs:", error);
+        throw error;
+    }
 };
 
 export const getOneBlog = async (blogId: string): Promise<IBlog | null> => {
