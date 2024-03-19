@@ -1,13 +1,13 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 interface IComment extends Document {
-  blog: mongoose.Types.ObjectId;
+  blogId: mongoose.Types.ObjectId;
   name: string;
   body: string;
 }
 
 const CommentSchema: Schema = new Schema({
-  blog: { type: Schema.Types.ObjectId, ref: 'Blog', required: true },
+  blogId: { type: Schema.Types.ObjectId, ref: 'Blog', required: true },
   name: { type: String, required: true },
   body: { type: String, required: true },
 });

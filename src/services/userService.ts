@@ -1,13 +1,15 @@
 import UserModel, { IUser } from '../models/userModel';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { generateJWT } from '../utils/jwtHelper';
+import { hashPassword } from './passwordHashHelper';
 
 export const registerUser = async (fullName: string, role: string, email: string, password: string): Promise<IUser> => {
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) {
         throw new Error('User with this email already exists');
     }
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await hashPassword(password);
     const newUser = new UserModel({
         fullName,
         role,
@@ -26,15 +28,7 @@ export const loginUser = async (email: string, password: string): Promise<string
     if (!isPasswordValid) {
         throw new Error('Invalid password');
     }
-    return jwt.sign(
-        { 
-            userId: user._id, 
-            email: user.email,
-            userRole: user.role,
-         },
-        process.env.JWT_SECRET || 'my_jwt_secret',
-        { expiresIn: '1d' } 
-    );
+    return generateJWT(user._id, user.email, user.role)
 };
 
 export const getAllUsers = async (): Promise<IUser[]> => {

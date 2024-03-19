@@ -1,8 +1,8 @@
 import CommentModel from "../models/commentModel";
 
 export const addComment = async (blogId: string, name: string, body: string): Promise<string> => {
-    const comment = await CommentModel.create({ blog: blogId, name, body });
-    return comment._id.toString();
+    const comment = await CommentModel.create({ blogId: blogId, name, body });
+    return comment.toString();
 };
 
 export const deleteComment = async (commentId: string): Promise<void> => {
