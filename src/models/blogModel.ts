@@ -12,6 +12,8 @@ const BlogSchema: Schema = new Schema({
   content: { type: String, required: true },
   blogImage: { type: String, required: true },
   timestamp: { type: Date, default: Date.now },
+  likes: [{ type: Schema.Types.ObjectId, ref: 'Like' }], 
+  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
 });
 
 const BlogModel = mongoose.model<IBlog>('Blog', BlogSchema);
