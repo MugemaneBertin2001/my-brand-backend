@@ -1,3 +1,3 @@
 # my-brand-backend
 
-![example workflow](https://github.com/github/docs/actions/workflows/main.yml/node.svg)
+![example workflow](https://github.com/github/docs/actions/workflows/node.js.yml/badge.svg)
