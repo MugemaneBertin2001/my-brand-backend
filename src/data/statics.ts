@@ -24,9 +24,8 @@ export const userData = {
   };
   
   export const queriesData = {
-    names: "John Doe",
+    fullName: "John Doe",
     email: "string@gmail.com",
-    subject: "Job Oportunities",
-    message: "Here we go..",
+    messageBody: "Here we go..",
   };
   
