@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build":"npm i && npx tsc",
-    "start":"npx nodemon dist/server.js",
+    "build": "npm i && npx tsc",
+    "start": "npx nodemon dist/server.js",
     "start:dev": " npm i && npx nodemon src/server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --no-cache --detectOpenHandles"
   },
   "keywords": [],
   "author": "ALx Holberton",
@@ -27,14 +27,26 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.2.1",
     "multer": "^1.4.5-lts.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.4.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
+    "@types/jest": "^29.5.12",
     "@types/jsonwebtoken": "^9.0.6",
+    "@types/mocha": "^10.0.6",
+    "@types/supertest": "^6.0.2",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.6",
+    "chai": "^5.1.0",
+    "jest": "^29.7.0",
     "nodemon": "^3.1.0",
+    "sinon": "^17.0.1",
+    "supertest": "^6.3.4",
+    "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2"
   }
 }

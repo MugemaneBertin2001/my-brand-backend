@@ -20,6 +20,7 @@ const authenticateUser = (req: Request, res: Response, next: NextFunction) => {
   } catch(error){
     return res.status(401).json({ error: `Unauthorized:${error}` });
   }
+  console.log(token)
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'my_jwt_secret') as UserPayload;
@@ -32,6 +33,7 @@ const authenticateUser = (req: Request, res: Response, next: NextFunction) => {
 
 const authorize = (role: string) => {
   return (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.user)
     if (req.user?.userRole !== role) {
       return res.status(403).json({ error: `Forbidden: You must be a ${role}` });
     }

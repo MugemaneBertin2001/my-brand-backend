@@ -10,13 +10,13 @@ const router = express.Router();
 router.post('/',authenticateUser, authorize('admin'),fileUpload.single('file'), customFileFilter, blogController.createBlog);
 router.get('/',blogController.getAllBlogs);
 router.get('/:id', blogController.getOneBlog);
-router.put('/:id',authenticateUser, authorize('admin'), blogController.updateBlog);
-router.delete('/:id',authenticateUser, authorize('admin'), blogController.deleteBlog);
+router.put('/:id', authenticateUser, authorize('admin'),blogController.updateBlog);
+router.delete('/:id', authenticateUser, authorize('admin'),blogController.deleteBlog);
 
 // likes
-router.get('/:blogId/likes', authenticateUser, likeController.getLikesByBlogId )
-router.post('/:blogId/like', authenticateUser, likeController.likeBlog )
-router.post('/:blogId/unlike', authenticateUser, likeController.unlikeBlog )
+router.get('/:blogId/likes',  likeController.getLikesByBlogId )
+router.post('/:blogId/like',authenticateUser, likeController.likeBlog )
+router.post('/:blogId/unlike',authenticateUser, likeController.unlikeBlog )
 // comments
 router.get('/:blogId/comment',  commentController.getCommentByBlogId )
 router.post('/:blogId/comment',  commentController.addComment )
