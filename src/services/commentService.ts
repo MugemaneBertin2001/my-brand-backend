@@ -9,7 +9,7 @@ export const deleteComment = async (commentId: string): Promise<void> => {
     await CommentModel.findByIdAndDelete(commentId);
 };
 
-export const getCommentsForBlog = async (blogId: string): Promise<{ name: string; body: string }[]> => {
-    const comments = await CommentModel.find({ blog: blogId }).select('name body');
-    return comments.map(comment => ({ name: comment.name, body: comment.body }));
+export const getCommentsForBlog = async (blogId: string): Promise<{ name: string; body: string; id:any }[]> => {
+    const comments = await CommentModel.find({ blogId: blogId }).select('name body');
+    return comments.map(comment => ({ id:comment.id,name: comment.name, body: comment.body }));
 };

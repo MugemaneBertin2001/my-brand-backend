@@ -4,8 +4,10 @@ import cors from 'cors';
 import dotenv from 'dotenv'; 
 import router from './routes';
 import swaggerUi from 'swagger-ui-express';
-import swaggerJSDoc from 'swagger-jsdoc';
-import { swaggerOptions } from './customSwaggerComponents';
+import YAML from 'yamljs';
+
+const swaggerJSDocs = YAML.load('./src/api.yaml');
+
 
 export class App {
     private app: Express;
@@ -16,27 +18,17 @@ export class App {
         dotenv.config();  
         this.config();
         this.DB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/mydb'; 
-        this.setupSwagger();
         this.setupRoutes();
     }
 
     private config(): void {
         this.app.use(express.json());
         this.app.use(cors());
+
+        this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJSDocs))
         this.app.use('/api/v1', router);
     }
 
-    private setupSwagger(): void {
-        const options = {
-            definition: swaggerOptions,
-            apis: ["./src/docs/*.ts"],
-        };
-        const swaggerSpec = swaggerJSDoc(options);
-        this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, { 
-            explorer: true,
-            customCssUrl: "https://cdn.jsdelivr.net/npm/swagger-ui-themes@3.0.0/themes/3.x/theme-newspaper.css",
-        }));
-    }
     
     private setupRoutes(): void {
         this.app.get('/', (req, res) => {

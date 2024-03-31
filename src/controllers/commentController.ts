@@ -13,16 +13,6 @@ export const addComment = async (req: Request, res: Response) => {
     }
 };
 
-export const deleteComment = async (req: Request, res: Response) => {
-    try {
-        const commentId = req.params.id;
-        await commentService.deleteComment(commentId);
-        res.status(200).json({ message: 'Comment deleted successfully' });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: error });
-    }
-};
 
 export const getCommentByBlogId = async (req: Request, res: Response) =>{
     try{

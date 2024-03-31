@@ -1,4 +1,5 @@
 import BlogModel, { IBlog } from '../models/blogModel';
+import { Types } from 'mongoose';
 
 export const createBlog = async (title: string, content: string, blogImage: string | null): Promise<IBlog> => {
     return await BlogModel.create({ title, content, blogImage });
@@ -25,6 +26,7 @@ export const updateBlog = async (blogId: string, updateData: Partial<IBlog>): Pr
     return await BlogModel.findByIdAndUpdate(blogId, updateData, { new: true });
 };
 
-export const deleteBlog = async (blogId: string): Promise<void> => {
-    await BlogModel.findByIdAndDelete(blogId);
+export const deleteBlog = async (blogId: string): Promise<any> => {
+    const deletedBlog = await BlogModel.findByIdAndDelete(blogId);
+    return deletedBlog ;
 };

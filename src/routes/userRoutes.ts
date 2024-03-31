@@ -6,7 +6,7 @@ const userRouter: Router = express.Router();
 
 userRouter.post('/register', registerUser);
 userRouter.post("/login", loginUser)
-userRouter.get('/list',authenticateUser, authorize('admin'), getAllUsers);
+userRouter.get('/list',authenticateUser, authorize('admin'),getAllUsers);
 userRouter.put('/:id',authenticateUser, authorize('admin'),updateUserById)
 userRouter.delete("/:id",authenticateUser, authorize('admin'),deleteUserById);
 export default userRouter;
