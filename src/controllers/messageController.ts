@@ -3,8 +3,8 @@ import * as messageService from '../services/messageService';
 
 export const createMessage = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { fullName, email, messageBody } = req.body;
-        const newMessage = await messageService.createMessage(fullName, email, messageBody);
+        const { fullName, email, messageBody, subject } = req.body;
+        const newMessage = await messageService.createMessage(fullName, email,subject, messageBody);
         res.status(201).json(newMessage);
     } catch (error) {
         console.error('Error creating message:', error);

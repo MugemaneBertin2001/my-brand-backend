@@ -22,7 +22,8 @@ export const getOneBlog = async (blogId: string): Promise<IBlog | null> => {
     return await BlogModel.findById(blogId);
 };
 
-export const updateBlog = async (blogId: string, updateData: Partial<IBlog>): Promise<IBlog | null> => {
+export const updateBlog = async (blogId: string, updateData: Partial<IBlog>, blogImage:any): Promise<IBlog | null> => {
+    updateData.blogImage = blogImage;
     return await BlogModel.findByIdAndUpdate(blogId, updateData, { new: true });
 };
 
