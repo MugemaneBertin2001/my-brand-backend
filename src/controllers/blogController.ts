@@ -46,11 +46,25 @@ export const getOneBlog = async (req: Request, res: Response) => {
 export const updateBlog = async (req: Request, res: Response) => {
     try {
         const blogId = req.params.id;
+        let blogImage;
+        
+        // Check if a new image file is uploaded
+        if (req.file) {
+            blogImage = await uploadToCloud(req.file);
+        }
+        
+        // Extract other update data from the request body
         const updateData = req.body;
-        const updatedBlog = await blogService.updateBlog(blogId, updateData);
+        
+        // Update the blog post with the new image and other data
+        const updatedBlog = await blogService.updateBlog(blogId, updateData, blogImage);
+        
+        // Check if the blog post was found and updated successfully
         if (!updatedBlog) {
             return res.status(404).json({ error: 'Blog not found' });
         }
+        
+        // Respond with the updated blog post
         res.status(200).json(updatedBlog);
     } catch (error) {
         console.error(error);

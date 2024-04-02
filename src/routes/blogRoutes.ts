@@ -10,7 +10,7 @@ const router = express.Router();
 router.post('/',authenticateUser, authorize('admin'),fileUpload.single('file'), customFileFilter, blogController.createBlog);
 router.get('/',blogController.getAllBlogs);
 router.get('/:id', blogController.getOneBlog);
-router.put('/:id', authenticateUser, authorize('admin'),blogController.updateBlog);
+router.put('/:id', authenticateUser, authorize('admin'),fileUpload.single('file'), customFileFilter,blogController.updateBlog);
 router.delete('/:id', authenticateUser, authorize('admin'),blogController.deleteBlog);
 
 // likes

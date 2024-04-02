@@ -3,6 +3,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 export interface IMessage extends Document {
   fullName: string;
   email: string;
+  subject:string,
   messageBody: string;
   timestamp: Date;
 }
@@ -10,6 +11,7 @@ export interface IMessage extends Document {
 const MessageSchema: Schema = new Schema({
   fullName: { type: String, required: true },
   email: { type: String, required: true },
+  subject:{type:String, required:true},
   messageBody: { type: String, required: true },
   timestamp: { type: Date, default: Date.now }
 });
